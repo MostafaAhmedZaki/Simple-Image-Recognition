@@ -1,10 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 # # Simple Image Recognition Algorithm
 
 
-# In[1]:
 
 
 import numpy as np
@@ -17,7 +13,6 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 get_ipython().run_line_magic('matplotlib', 'inline')
 
-# In[2]:
 
 
 def load_dataset():
@@ -36,13 +31,11 @@ def load_dataset():
     return train_set_x_orig, train_set_y_orig, test_set_x_orig, test_set_y_orig, classes
 
 
-# In[3]:
 
 
 train_set_x_orig, train_set_y, test_set_x_orig, test_set_y, classes = load_dataset()
 
 
-# In[4]:
 
 
 m_train = train_set_x_orig.shape[0]
@@ -58,7 +51,6 @@ print ("test_set_x shape: " + str(test_set_x_orig.shape))
 print ("test_set_y shape: " + str(test_set_y.shape))
 
 
-# In[5]:
 
 
 train_set_x_flatten = train_set_x_orig.reshape(train_set_x_orig.shape[0], -1).T
@@ -71,13 +63,11 @@ print ("test_set_x_flatten shape: " + str(test_set_x_flatten.shape))
 print ("test_set_y shape: " + str(test_set_y.shape))
 
 
-# In[6]:
 
 
 train_set_x = train_set_x_flatten/255.
 test_set_x = test_set_x_flatten/255.
 
-# In[7]:
 
 
 def sigmoid(z):
@@ -86,13 +76,11 @@ def sigmoid(z):
     return s
 
 
-# In[8]:
 
 
 print ("sigmoid([0, 2]) = " + str(sigmoid(np.array([0,2]))))
 
 
-# In[9]:
 
 
 x = np.array([0.5, 0, 2.0])
@@ -100,7 +88,6 @@ output = sigmoid(x)
 print(output)
 
 
-# In[10]:
 
 
 def initialize_with_zeros(dim):
@@ -112,7 +99,6 @@ def initialize_with_zeros(dim):
     return w, b
 
 
-# In[11]:
 
 
 dim = 2
@@ -121,7 +107,6 @@ print ("w = " + str(w))
 print ("b = " + str(b))
 
 
-# In[12]:
 
 
 def propagate(w, b, X, Y):
@@ -138,7 +123,6 @@ def propagate(w, b, X, Y):
     return grads, cost
 
 
-# In[12]:
 
 
 w, b, X, Y = np.array([[1.],[2.]]), 2., np.array([[1.,2.,-1.],[3.,4.,-3.2]]), np.array([[1,0,1]])
@@ -148,7 +132,6 @@ print ("db = " + str(grads["db"]))
 print ("cost = " + str(cost))
 
 
-# In[13]:
 
 
 def optimize(w, b, X, Y, num_iterations=100, learning_rate=0.009, print_cost=False):
@@ -176,7 +159,6 @@ def optimize(w, b, X, Y, num_iterations=100, learning_rate=0.009, print_cost=Fal
     return params, grads, costs
 
 
-# In[14]:
 
 
 params, grads, costs = optimize(w, b, X, Y, num_iterations= 100, learning_rate = 0.009, print_cost = False)
@@ -188,7 +170,6 @@ print ("db = " + str(grads["db"]))
 print("Costs = " + str(costs))
 
 
-# In[15]:
 
 
 def predict(w, b, X):
@@ -203,7 +184,6 @@ def predict(w, b, X):
     return Y_prediction
 
 
-# In[16]:
 
 
 w = np.array([[0.1124579],[0.23106775]])
@@ -211,7 +191,6 @@ b = -0.3
 X = np.array([[1.,-1.1,-3.2],[1.2,2.,0.1]])
 print ("predictions = " + str(predict(w, b, X)))
 
-# In[17]:
 
 
 def model(X_train, Y_train, X_test, Y_test, num_iterations=2000, learning_rate=0.5, print_cost=False):
@@ -239,24 +218,21 @@ def model(X_train, Y_train, X_test, Y_test, num_iterations=2000, learning_rate=0
     return d
 
 
-# In[18]:
 
 
-logistic_regression_model = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations=2000, learning_rate=0.005, print_cost=True)
+Model = model(train_set_x, train_set_y, test_set_x, test_set_y, num_iterations=2000, learning_rate=0.005, print_cost=True)
 
 
-# In[19]:
 
 
-costs = np.squeeze(logistic_regression_model['costs'])
+costs = np.squeeze(Model['costs'])
 plt.plot(costs)
 plt.ylabel('cost')
 plt.xlabel('iterations (per hundreds)')
-plt.title("Learning rate =" + str(logistic_regression_model["learning_rate"]))
+plt.title("Learning rate =" + str(Model["learning_rate"]))
 plt.show()
 
 
-# In[20]:
 
 
 import IPython.display as display
@@ -265,19 +241,17 @@ image_path = 'my_image.jpg'
 display.display(Image.open(image_path))
 
 
-# In[21]:
 
 
 my_image = "my_image.jpg"   
 image = np.array(Image.open(my_image).resize((num_px, num_px)))
 image = image / 255.
 image = image.reshape((1, num_px * num_px * 3)).T
-my_predicted_image = predict(logistic_regression_model["w"], logistic_regression_model["b"], image)
+my_predicted_image = predict(Model["w"], Model["b"], image)
 
 print("y = " + str(np.squeeze(my_predicted_image)) + ", algorithm predicts a \"" + classes[int(np.squeeze(my_predicted_image)),].decode("utf-8") +  "\" picture.")
 
 
-# In[22]:
 
 
 import IPython.display as display
@@ -286,19 +260,17 @@ image_path = 'my_image2.jpg'
 display.display(Image.open(image_path))
 
 
-# In[23]:
 
 
 my_image = "my_image2.jpg"   
 image = np.array(Image.open(my_image).resize((num_px, num_px)))
 image = image / 255.
 image = image.reshape((1, num_px * num_px * 3)).T
-my_predicted_image = predict(logistic_regression_model["w"], logistic_regression_model["b"], image)
+my_predicted_image = predict(Model["w"], Model["b"], image)
 
 print("y = " + str(np.squeeze(my_predicted_image)) + ", algorithm predicts a \"" + classes[int(np.squeeze(my_predicted_image)),].decode("utf-8") +  "\" picture.")
 
 
-# In[24]:
 
 
 import IPython.display as display
@@ -307,14 +279,13 @@ image_path = 'download (1).jpg'
 display.display(Image.open(image_path))
 
 
-# In[25]:
 
 
 my_image = "download (1).jpg"   
 image = np.array(Image.open(my_image).resize((num_px, num_px)))
 image = image / 255.
 image = image.reshape((1, num_px * num_px * 3)).T
-my_predicted_image = predict(logistic_regression_model["w"], logistic_regression_model["b"], image)
+my_predicted_image = predict(Model["w"], Model["b"], image)
 
 print("y = " + str(np.squeeze(my_predicted_image)) + ", algorithm predicts a \"" + classes[int(np.squeeze(my_predicted_image)),].decode("utf-8") +  "\" picture.")
 
